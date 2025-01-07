@@ -1,0 +1,2 @@
+# MWO
+Metodyki Wytwarzania Oprogramowania

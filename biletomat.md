@@ -6,6 +6,20 @@
 
 ## Diagramy przypadków uzycia
 
+### Obsługa wyboru języka
+
+```mermaid
+flowchart TD
+    Biletomat{Biletomat}
+    Obsluga_wyboru_jezyka([Obsługa wyboru języka])
+    Generowanie_biletu_elektronicznego([Generowanie biletu elektronicznego])
+    Powiadomienie_o_bledach_w_procesie([Powiadomienie o błędach w procesie])
+
+    Biletomat --> Obsluga_wyboru_jezyka
+    Obsluga_wyboru_jezyka --> |include| Generowanie_biletu_elektronicznego
+    Obsluga_wyboru_jezyka --> |include| Powiadomienie_o_bledach_w_procesie
+```
+
 ### Wyświetlenie dostępnych biletów
 
 ```mermaid
@@ -18,4 +32,25 @@ flowchart TD
     biletomat --> wyswietlenie_dostepnych_biletow
     wyswietlenie_dostepnych_biletow --> |include| pobranie_listy_dostepnych_biletow
     wyswietlenie_dostepnych_biletow --> |extend| ostrzezenie_o_braku_aktualnych_danych
+```
+
+### Diagram wspólny
+
+
+```mermaid
+flowchart TD
+    biletomat{Biletomat}
+    wyswietlenie_dostepnych_biletow([Wyświetlenie dostępnych biletów])
+    pobranie_listy_dostepnych_biletow([Pobranie listy dostępnych biletów])
+    ostrzezenie_o_braku_aktualnych_danych([Ostrzeżenie o braku aktualnych danych])
+    obsluga_wyboru_jezyka([Obsługa wyboru języka])
+    generowanie_biletu_elektronicznego([Generowanie biletu elektronicznego])
+    powiadomienie_o_bledach_w_procesie([Powiadomienie o błędach w procesie])
+    
+    biletomat --> wyswietlenie_dostepnych_biletow
+    wyswietlenie_dostepnych_biletow --> |include| pobranie_listy_dostepnych_biletow
+    wyswietlenie_dostepnych_biletow --> |extend| ostrzezenie_o_braku_aktualnych_danych
+    biletomat --> obsluga_wyboru_jezyka
+    obsluga_wyboru_jezyka --> |include| generowanie_biletu_elektronicznego
+    obsluga_wyboru_jezyka --> |include| powiadomienie_o_bledach_w_procesie
 ```

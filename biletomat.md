@@ -10,14 +10,23 @@
 
 ```mermaid
 flowchart TD
-    Biletomat{Biletomat}
-    Obsluga_wyboru_jezyka([Obsługa wyboru języka])
-    Generowanie_biletu_elektronicznego([Generowanie biletu elektronicznego])
-    Powiadomienie_o_bledach_w_procesie([Powiadomienie o błędach w procesie])
+    User{User}
+    User --> Wyświetlenie_opcji_jezykowych
 
-    Biletomat --> Obsluga_wyboru_jezyka
-    Obsluga_wyboru_jezyka --> |include| Generowanie_biletu_elektronicznego
-    Obsluga_wyboru_jezyka --> |include| Powiadomienie_o_bledach_w_procesie
+    subgraph biletomat
+    
+    Wyświetlenie_opcji_jezykowych([Wyświetlenie opcji językowych])
+    Rejestracja_wyboru_jezyka([Rejestracja wyboru języka])
+    Dostosowanie_interfejsu([Dostosowanie interfejsu])
+    Opcje_jezykowe([Opcje językowe])
+    Powrot_do_jezyka_domyslnego([Powrót do języka domyślnego])
+
+    Wyświetlenie_opcji_jezykowych --> Rejestracja_wyboru_jezyka
+    Rejestracja_wyboru_jezyka --> Dostosowanie_interfejsu
+    Wyświetlenie_opcji_jezykowych --> |include| Opcje_jezykowe
+    Powrot_do_jezyka_domyslnego -.-> |extend| Wyświetlenie_opcji_jezykowych
+
+    end
 ```
 
 ### Wyświetlenie dostępnych biletów

@@ -6,6 +6,36 @@
 
 ## Diagramy przypadków uzycia
 
+## Generowanie potwierdzenia zakupu
+
+```mermaid
+flowchart TD
+    
+    System_transakcyjny{System transakcyjny}
+    Uzytkownik{Użytkownik}
+    System_transakcyjny --> Potwierdzenie_zakonczenia_transakcji
+    Oczekiwanie_na_odbior --> Uzytkownik
+
+    subgraph system biletowy
+    
+    Potwierdzenie_zakonczenia_transakcji([Potwierdzenie zakończenia transakcji])
+    Generowanie_potwierdzenia([Generowanie potwierdzenia])
+    Informacja_o_potwierdzeniu([Informacja o potwierdzeniu])
+    Oczekiwanie_na_odbior([Oczekiwanie na odbiór])
+
+    Generowanie_biletu([Generowanie biletu])
+    Blad_generowania([Błąd generowania])
+
+
+    Potwierdzenie_zakonczenia_transakcji --> Generowanie_potwierdzenia
+    Generowanie_potwierdzenia --> Informacja_o_potwierdzeniu
+    Informacja_o_potwierdzeniu --> Oczekiwanie_na_odbior
+
+    Generowanie_potwierdzenia --> |include| Generowanie_biletu
+    Blad_generowania -.-> |extend| Generowanie_potwierdzenia
+    end
+```
+
 ### Obsługa wyboru języka
 
 ```mermaid

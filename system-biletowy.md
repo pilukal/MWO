@@ -9,14 +9,28 @@
 
 ```mermaid
 flowchart TD
-    System_biletowy{System biletowy}
-    Akualizacja_taryf([Aktualizacja taryf])
-    Wprowadzenie_danych_do_bazy_taryf([Wprowadzenie danych do bazy taryf])
-    Powiadomienie_biletomatów_o_niezgodności_taryf([Powiadomienie biletomatów o niezgodności taryf])
+    
+    Administrator_systemu{Administrator systemu}
+    Biletomat{Biletomat}
 
-    System_biletowy --> Akualizacja_taryf
-    Akualizacja_taryf --> |include| Wprowadzenie_danych_do_bazy_taryf
-    Akualizacja_taryf --> |include| Powiadomienie_biletomatów_o_niezgodności_taryf
+    Administrator_systemu --> Odebranie_zadania_aktualizacji
+    Przeslanie_zaktualizowanych_taryf --> Biletomat
+    Powiadomienie_o_bledach_taryf --> Biletomat
+
+    subgraph system biletowy
+    
+    Odebranie_zadania_aktualizacji([Odebranie żądania aktualizacji])
+    Wprowadzenie_nowych_taryf([Wprowadzenie nowych taryf])
+    Przeslanie_zaktualizowanych_taryf([Przesłanie zaktualizowanych taryf])
+    Aktualizacja_bazy_taryf([Aktualizacja bazy taryf])
+    Powiadomienie_o_bledach_taryf([Powiadomienie o błędach taryf])
+
+
+    Odebranie_zadania_aktualizacji --> Wprowadzenie_nowych_taryf
+    Wprowadzenie_nowych_taryf --> Przeslanie_zaktualizowanych_taryf
+    Wprowadzenie_nowych_taryf --> |include| Aktualizacja_bazy_taryf
+    Powiadomienie_o_bledach_taryf -.-> |extend| Przeslanie_zaktualizowanych_taryf
+    end
 ```
 
 

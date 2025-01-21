@@ -5,6 +5,32 @@
 
 ### Diagramy przypadków uzycia
 
+### Obsługa aplikacji mobilnej
+```mermaid
+flowchart TD
+    
+    Aplikacja_mobilna{Aplikacja mobilna}
+
+    Aplikacja_mobilna --> Odebranie_zadania_zakupu
+    Przeslanie_biletu_elektronicznego --> Aplikacja_mobilna
+
+    subgraph system biletowy
+    
+    Odebranie_zadania_zakupu([Odebranie żądania zakupu])
+    Generowanie_biletu_elektronicznego([Generowanie biletu elektronicznego])
+    Przeslanie_biletu_elektronicznego([Przesłanie biletu elektronicznego])
+    
+    Generowanie_biletu([Generowanie biletu])
+    Obsluga_bledow_zakupu([Obsługa błędów zakupu])
+
+
+    Odebranie_zadania_zakupu --> Generowanie_biletu_elektronicznego
+    Generowanie_biletu_elektronicznego --> Przeslanie_biletu_elektronicznego
+
+    Generowanie_biletu_elektronicznego --> |include| Generowanie_biletu
+    Obsluga_bledow_zakupu -.-> |extend| Generowanie_biletu_elektronicznego
+    end
+```
 ### Aktualizacja Taryf
 
 ```mermaid

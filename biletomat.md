@@ -5,6 +5,46 @@
 5. Jako biletomat, chcę wydawać resztę w gotówce, jeśli użytkownik zapłaci nadmiarowo, aby transakcja była zgodna z oczekiwaniami.
 # Diagramy sekwencji
 
+## Obsługa wyboru języka
+> - Aktor: Uzytkownik
+> - Obiekty: Biletomat
+> - Scenariusz główny:
+>    - Uzytkownik wybiera opcję wyboru języka
+>    - Biletomat pobiera listę dostępnych języków
+>    - Biletomat wyświetla ekran wyboru języka
+>    - Uzytkownik wybiera język
+>    - Biletomat zamyka ekran wyboru języka
+>    - Biletomat rejestruje wybór języka
+>    - Biletomat dostosowuje interfejs do wybranego języka
+> - Scenariusz alternatywny (brak wyboru uzytkownika przez 30 sekund):
+>    - Biletomat uruchamia ekran powitalny (Uruchomienie ekranu powitalnego).
+>    - Uzytkownik wybiera opcję wyboru języka
+>    - Biletomat pobiera listę dostępnych języków
+>    - Biletomat wyświetla ekran wyboru języka
+>    - Biletomat zamyka ekran wyboru języka
+>    - Biletomat dostosowuje interfejs do języka domyślnego
+
+```mermaid
+sequenceDiagram
+ 
+    PARTICIPANT USER AS Użytkownik
+    PARTICIPANT BT AS Biletomat
+
+    USER->>BT: Wybież opcję wyboru języka
+    BT->>BT: Pobierz listę dostępnych języków
+    BT->>USER: Wyświetl ekran wyboru języka
+    ALT wybrano język
+    USER->>BT: Wybierz język
+    BT->>BT: Zamknij ekran wyboru języka
+    BT->>BT: Zarejestruj wybór języka
+    BT->>BT: Dostosuj interfejs do wybranego języka
+    ELSE nie wybrano jezyka przez 30 sekund
+    BT->>BT: Zamknij ekran wyboru języka
+    BT->>BT: Dostosuj interfejs do języka domyślnego
+    
+    END
+```
+
 ## wyświetlenie dostępnych biletów
 
 > - Aktor: Biletomat Uzytkownik

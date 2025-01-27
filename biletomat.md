@@ -3,8 +3,41 @@
 3. Jako biletomat, chcę posiadać czytelny ekran dotykowy, aby użytkownik mógł łatwo nawigować po interfejsie.
 4. Jako biletomat, chcę być wyposażony w różne metody płatności (terminal kart, czytnik gotówki, NFC), aby obsługiwać różnorodne transakcje.
 5. Jako biletomat, chcę wydawać resztę w gotówce, jeśli użytkownik zapłaci nadmiarowo, aby transakcja była zgodna z oczekiwaniami.
+# Diagramy sekwencji
 
-## Diagramy przypadków uzycia
+## wyświetlenie dostępnych biletów
+
+> - Aktor: Biletomat Uzytkownik
+> - Obiekty: system centralny 
+> - Scenariusz główny:
+>    - Biletomat uruchamia ekran powitalny
+>    - Biletomat wysyła zapytanie o listę dostępnych biletów do systemu centralnego
+>    - System centralny zwraca listę dostępnych biletów.
+>    - Biletomat wyświetla kategorię biletów oraz szczegóły dotyczące ich dostępności
+> - Scenariusz alternatywny (brak aktualnych danych):
+>    - Biletomat uruchamia ekran powitalny (Uruchomienie ekranu powitalnego).
+>    - Biletomat wysyła zapytanie o listę dostępnych biletów do systemu centralnego.
+>    - System centralny zwraca komunikat o błędzie, np. awaria sieci.
+>    - Biletomat wyświetla ostrzeżenie o braku aktualnych danych.
+```mermaid
+sequenceDiagram
+ 
+    PARTICIPANT USER AS Użytkownik
+    PARTICIPANT BI AS Biletomat
+    PARTICIPANT CS AS System centralny
+
+    BI->>BI: Uruchomienie ekranu powitalnego
+    BI->>CS: Zapytanie o listę dostępnych biletów
+    ALT Lista biletów dostępna
+    CS-->>BI: lista dostępnych biletów
+    BI-->>USER: wyświetlenie dostępnych biletów
+    ELSE Lista biletów niedostępna
+    CS-->>BI: komunikat o błędzie
+    BI-->>USER: wyświetlenie informacji o braku aktualnych danych
+    END
+
+```
+# Diagramy przypadków uzycia
 
 ## Generowanie potwierdzenia zakupu
 

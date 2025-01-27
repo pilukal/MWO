@@ -87,6 +87,35 @@ flowchart TD
     end
 ```
 
+### Rejestracja tranzakcji sprzedazy
+
+```mermaid
+flowchart TD
+    
+    Biletomat{Biletomat}
+    Aplikacja_mobilna{Aplikacja mobilna}
+    Biletomat --> Odebranie_danych_transakcji
+    Aplikacja_mobilna --> Odebranie_danych_transakcji
+    Potwierdzenie_rejestracji_transakcji -->Biletomat
+    Potwierdzenie_rejestracji_transakcji -->Aplikacja_mobilna
+    subgraph system biletowy
+    
+    Odebranie_danych_transakcji([Odebranie danych transakcji])
+    Zapis_transakcji_w_bazie([Zapis transakcji w bazie])
+    Potwierdzenie_rejestracji_transakcji([Potwierdzenie rejestracji transakcji])
+
+    Zapis_danych_transakcji([Zapis danych transakcji])
+    Powiadomienie_o_bledach([Powiadomienie o błędach])
+
+
+    Odebranie_danych_transakcji --> Zapis_transakcji_w_bazie
+    Zapis_transakcji_w_bazie --> Potwierdzenie_rejestracji_transakcji
+
+    Zapis_transakcji_w_bazie --> |include| Zapis_danych_transakcji
+    Powiadomienie_o_bledach -.-> |extend| Potwierdzenie_rejestracji_transakcji
+    end
+```
+
 ### Diagram wspólny
 
 ```mermaid

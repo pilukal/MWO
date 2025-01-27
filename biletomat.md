@@ -73,6 +73,34 @@ flowchart TD
     wyswietlenie_dostepnych_biletow --> |extend| ostrzezenie_o_braku_aktualnych_danych
 ```
 
+### Wyswietlenie podsumowania tranzakcji
+
+```mermaid
+flowchart TD
+    
+    Uzytkownik{Użytkownik}
+    Uzytkownik --> Gromadzenie_danych_o_transakcji
+    Oczekiwanie_na_decyzje_uzytkownika --> Uzytkownik
+
+    subgraph biletomat
+    
+    Gromadzenie_danych_o_transakcji([Gromadzenie danych o transakcji])
+    Wyswietlenie_podsumowania([Wyświetlenie podsumowania])
+    Oczekiwanie_na_decyzje_uzytkownika([Oczekiwanie na decyzję użytkownika])
+
+    Podsumowanie_transakcji([Podsumowanie transakcji])
+    Obsluga_anulowania([Obsługa anulowania])
+
+
+    Gromadzenie_danych_o_transakcji --> Wyswietlenie_podsumowania
+    Wyswietlenie_podsumowania --> Oczekiwanie_na_decyzje_uzytkownika
+
+    Wyswietlenie_podsumowania --> |include| Podsumowanie_transakcji
+    Obsluga_anulowania -.-> |extend| Oczekiwanie_na_decyzje_uzytkownika
+    end
+```
+
+
 ### Diagram wspólny
 
 

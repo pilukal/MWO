@@ -16,7 +16,7 @@ flowchart TD
     System_transakcyjny --> Potwierdzenie_zakonczenia_transakcji
     Oczekiwanie_na_odbior --> Uzytkownik
 
-    subgraph system biletowy
+    subgraph biletomat
     
     Potwierdzenie_zakonczenia_transakcji([Potwierdzenie zakończenia transakcji])
     Generowanie_potwierdzenia([Generowanie potwierdzenia])
@@ -40,9 +40,9 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    User{User}
-    User --> Wyświetlenie_opcji_jezykowych
-
+    Uzytkownik{Użytkownik}
+    Uzytkownik --> Wyświetlenie_opcji_jezykowych
+    Dostosowanie_interfejsu --> Uzytkownik
     subgraph biletomat
     
     Wyświetlenie_opcji_jezykowych([Wyświetlenie opcji językowych])
@@ -55,7 +55,7 @@ flowchart TD
     Rejestracja_wyboru_jezyka --> Dostosowanie_interfejsu
     Wyświetlenie_opcji_jezykowych --> |include| Opcje_jezykowe
     Powrot_do_jezyka_domyslnego -.-> |extend| Wyświetlenie_opcji_jezykowych
-
+    
     end
 ```
 
@@ -63,14 +63,28 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    biletomat{Biletomat}
-    wyswietlenie_dostepnych_biletow([Wyświetlenie dostępnych biletów])
-    pobranie_listy_dostepnych_biletow([Pobranie listy dostępnych biletów])
-    ostrzezenie_o_braku_aktualnych_danych([Ostrzeżenie o braku aktualnych danych])
     
-    biletomat --> wyswietlenie_dostepnych_biletow
-    wyswietlenie_dostepnych_biletow --> |include| pobranie_listy_dostepnych_biletow
-    wyswietlenie_dostepnych_biletow --> |extend| ostrzezenie_o_braku_aktualnych_danych
+    Uzytkownik{Użytkownik}
+    Oczekiwanie_na_wybor_uzytkownika --> Uzytkownik
+
+    subgraph biletomat
+    
+    Uruchomienie_ekranu_powitalnego([Uruchomienie ekranu powitalnego])
+    Pobranie_listy_biletow([Pobranie listy biletów])
+    Wyswietlenie_biletow([Wyświetlenie biletów])
+    Oczekiwanie_na_wybor_uzytkownika([Oczekiwanie na wybór użytkownika])
+
+    Aktualizacja_biletow([Aktualizacja biletów])
+    Ostrzezenie_o_braku_danych([Ostrzeżenie o braku danych])
+
+
+    Uruchomienie_ekranu_powitalnego --> Pobranie_listy_biletow
+    Pobranie_listy_biletow --> Wyswietlenie_biletow
+    Wyswietlenie_biletow --> Oczekiwanie_na_wybor_uzytkownika
+
+    Pobranie_listy_biletow --> |include| Aktualizacja_biletow
+    Ostrzezenie_o_braku_danych -.-> |extend| Pobranie_listy_biletow
+    end
 ```
 
 ### Wyswietlenie podsumowania tranzakcji
@@ -106,18 +120,66 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    biletomat{Biletomat}
-    wyswietlenie_dostepnych_biletow([Wyświetlenie dostępnych biletów])
-    pobranie_listy_dostepnych_biletow([Pobranie listy dostępnych biletów])
-    ostrzezenie_o_braku_aktualnych_danych([Ostrzeżenie o braku aktualnych danych])
-    obsluga_wyboru_jezyka([Obsługa wyboru języka])
-    generowanie_biletu_elektronicznego([Generowanie biletu elektronicznego])
-    powiadomienie_o_bledach_w_procesie([Powiadomienie o błędach w procesie])
     
-    biletomat --> wyswietlenie_dostepnych_biletow
-    wyswietlenie_dostepnych_biletow --> |include| pobranie_listy_dostepnych_biletow
-    wyswietlenie_dostepnych_biletow --> |extend| ostrzezenie_o_braku_aktualnych_danych
-    biletomat --> obsluga_wyboru_jezyka
-    obsluga_wyboru_jezyka --> |include| generowanie_biletu_elektronicznego
-    obsluga_wyboru_jezyka --> |include| powiadomienie_o_bledach_w_procesie
+    System_transakcyjny{System transakcyjny}
+    Uzytkownik{Użytkownik}
+    System_transakcyjny --> Potwierdzenie_zakonczenia_transakcji
+    Oczekiwanie_na_odbior --> Uzytkownik
+
+    Uzytkownik --> Wyświetlenie_opcji_jezykowych
+    Dostosowanie_interfejsu --> Uzytkownik
+
+    Oczekiwanie_na_wybor_uzytkownika --> Uzytkownik
+
+    Uzytkownik --> Gromadzenie_danych_o_transakcji
+    Oczekiwanie_na_decyzje_uzytkownika --> Uzytkownik
+
+    subgraph biletomat
+    
+    Potwierdzenie_zakonczenia_transakcji([Potwierdzenie zakończenia transakcji])
+    Generowanie_potwierdzenia([Generowanie potwierdzenia])
+    Informacja_o_potwierdzeniu([Informacja o potwierdzeniu])
+    Oczekiwanie_na_odbior([Oczekiwanie na odbiór])
+    Generowanie_biletu([Generowanie biletu])
+    Blad_generowania([Błąd generowania])
+    Potwierdzenie_zakonczenia_transakcji --> Generowanie_potwierdzenia
+    Generowanie_potwierdzenia --> Informacja_o_potwierdzeniu
+    Informacja_o_potwierdzeniu --> Oczekiwanie_na_odbior
+    Generowanie_potwierdzenia --> |include| Generowanie_biletu
+    Blad_generowania -.-> |extend| Generowanie_potwierdzenia
+    
+    
+    Wyświetlenie_opcji_jezykowych([Wyświetlenie opcji językowych])
+    Rejestracja_wyboru_jezyka([Rejestracja wyboru języka])
+    Dostosowanie_interfejsu([Dostosowanie interfejsu])
+    Opcje_jezykowe([Opcje językowe])
+    Powrot_do_jezyka_domyslnego([Powrót do języka domyślnego])
+    Wyświetlenie_opcji_jezykowych --> Rejestracja_wyboru_jezyka
+    Rejestracja_wyboru_jezyka --> Dostosowanie_interfejsu
+    Wyświetlenie_opcji_jezykowych --> |include| Opcje_jezykowe
+    Powrot_do_jezyka_domyslnego -.-> |extend| Wyświetlenie_opcji_jezykowych
+    
+
+    Uruchomienie_ekranu_powitalnego([Uruchomienie ekranu powitalnego])
+    Pobranie_listy_biletow([Pobranie listy biletów])
+    Wyswietlenie_biletow([Wyświetlenie biletów])
+    Oczekiwanie_na_wybor_uzytkownika([Oczekiwanie na wybór użytkownika])
+    Aktualizacja_biletow([Aktualizacja biletów])
+    Ostrzezenie_o_braku_danych([Ostrzeżenie o braku danych])
+    Uruchomienie_ekranu_powitalnego --> Pobranie_listy_biletow
+    Pobranie_listy_biletow --> Wyswietlenie_biletow
+    Wyswietlenie_biletow --> Oczekiwanie_na_wybor_uzytkownika
+    Pobranie_listy_biletow --> |include| Aktualizacja_biletow
+    Ostrzezenie_o_braku_danych -.-> |extend| Pobranie_listy_biletow
+
+    Gromadzenie_danych_o_transakcji([Gromadzenie danych o transakcji])
+    Wyswietlenie_podsumowania([Wyświetlenie podsumowania])
+    Oczekiwanie_na_decyzje_uzytkownika([Oczekiwanie na decyzję użytkownika])
+    Podsumowanie_transakcji([Podsumowanie transakcji])
+    Obsluga_anulowania([Obsługa anulowania])
+    Gromadzenie_danych_o_transakcji --> Wyswietlenie_podsumowania
+    Wyswietlenie_podsumowania --> Oczekiwanie_na_decyzje_uzytkownika
+    Wyswietlenie_podsumowania --> |include| Podsumowanie_transakcji
+    Obsluga_anulowania -.-> |extend| Oczekiwanie_na_decyzje_uzytkownika
+    end
 ```

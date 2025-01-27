@@ -5,7 +5,7 @@
 
 ### Diagramy przypadków uzycia
 
-### Obsługa aplikacji mobilnej
+### Współpraca z aplikacjami mobilnymi
 ```mermaid
 flowchart TD
     
@@ -13,15 +13,15 @@ flowchart TD
 
     Aplikacja_mobilna --> Odebranie_zadania_zakupu
     Przeslanie_biletu_elektronicznego --> Aplikacja_mobilna
-
+    Obsluga_bledow_zakupu --> Aplikacja_mobilna
     subgraph system biletowy
     
-    Odebranie_zadania_zakupu([Odebranie żądania zakupu])
+    Odebranie_zadania_zakupu([Odebranie żądania wydania biletu])
     Generowanie_biletu_elektronicznego([Generowanie biletu elektronicznego])
-    Przeslanie_biletu_elektronicznego([Przesłanie biletu elektronicznego])
+    Przeslanie_biletu_elektronicznego([Przesłanie biletu])
     
     Generowanie_biletu([Generowanie biletu])
-    Obsluga_bledow_zakupu([Obsługa błędów zakupu])
+    Obsluga_bledow_zakupu([Powiadomienie o błędach])
 
 
     Odebranie_zadania_zakupu --> Generowanie_biletu_elektronicznego
@@ -64,30 +64,30 @@ flowchart TD
 ```mermaid
 flowchart TD
     
-    Uzytkownik{Użytkownik}
-    Oczekiwanie_na_wybor_uzytkownika --> Uzytkownik
-
-    subgraph biletomat
+    Biletomat{Biletomat}
+    Kontroler{Kontroler}
+    Biletomat --> Odebranie_zadania_weryfikacji
+    Kontroler --> Odebranie_zadania_weryfikacji
+    Przeslanie_wyniku_weryfikacji -->Biletomat
+    Przeslanie_wyniku_weryfikacji -->Kontroler
+    subgraph system biletowy
     
-    Uruchomienie_ekranu_powitalnego([Uruchomienie ekranu powitalnego])
-    Pobranie_listy_biletow([Pobranie listy biletów])
-    Wyswietlenie_biletow([Wyświetlenie biletów])
-    Oczekiwanie_na_wybor_uzytkownika([Oczekiwanie na wybór użytkownika])
+    Odebranie_zadania_weryfikacji([Odebranie żądania weryfikacji])
+    Sprawdzenie_danych_biletu([Sprawdzenie danych biletu])
+    Przeslanie_wyniku_weryfikacji([Przesłanie wyniku weryfikacji])
 
-    Aktualizacja_biletow([Aktualizacja biletów])
-    Ostrzezenie_o_braku_danych([Ostrzeżenie o braku danych])
+    Weryfikacja_bazy_danych([Weryfikacja bazy danych])
+    Powiadomienie_o_oszustwie([Powiadomienie o oszustwie])
 
+    Odebranie_zadania_weryfikacji --> Sprawdzenie_danych_biletu
+    Sprawdzenie_danych_biletu --> Przeslanie_wyniku_weryfikacji
 
-    Uruchomienie_ekranu_powitalnego --> Pobranie_listy_biletow
-    Pobranie_listy_biletow --> Wyswietlenie_biletow
-    Wyswietlenie_biletow --> Oczekiwanie_na_wybor_uzytkownika
-
-    Pobranie_listy_biletow --> |include| Aktualizacja_biletow
-    Ostrzezenie_o_braku_danych -.-> |extend| Pobranie_listy_biletow
+    Sprawdzenie_danych_biletu --> |include| Weryfikacja_bazy_danych
+    Powiadomienie_o_oszustwie -.-> |extend| Przeslanie_wyniku_weryfikacji
     end
 ```
 
-### Rejestracja tranzakcji sprzedazy
+### Rejestracja tranzakcji
 
 ```mermaid
 flowchart TD
@@ -101,10 +101,10 @@ flowchart TD
     subgraph system biletowy
     
     Odebranie_danych_transakcji([Odebranie danych transakcji])
-    Zapis_transakcji_w_bazie([Zapis transakcji w bazie])
+    Zapis_transakcji_w_bazie([Zapis danych transakcji])
     Potwierdzenie_rejestracji_transakcji([Potwierdzenie rejestracji transakcji])
 
-    Zapis_danych_transakcji([Zapis danych transakcji])
+    Zapis_danych_transakcji([Zapis transakcji])
     Powiadomienie_o_bledach([Powiadomienie o błędach])
 
 
@@ -120,19 +120,66 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    system_biletowy{System Biletowy}
-    weryfikacja_waznosci_biletu([Weryfikacja ważności biletu])
-    sprawdzenie_danych_biletu_w_bazie_danych([Sprawdzenie danych biletu w bazie danych])
-    powiadomienie_o_probie_oszustwa([Powiadomienie o próbie oszustwa w przypadku nieważnego biletu])
-    akualizacja_taryf([Aktualizacja taryf])
-    wprowadzenie_danych_do_bazy_taryf([Wprowadzenie danych do bazy taryf])
-    powiadomienie_biletomatów_o_niezgodności_taryf([Powiadomienie biletomatów o niezgodności taryf])
+    
+    Aplikacja_mobilna{Aplikacja mobilna}
+    Administrator_systemu{Administrator systemu}
+    Biletomat{Biletomat}
+    Kontroler{Kontroler}
 
+    Aplikacja_mobilna --> Odebranie_zadania_zakupu
+    Przeslanie_biletu_elektronicznego --> Aplikacja_mobilna
+    Obsluga_bledow_zakupu --> Aplikacja_mobilna
+    Administrator_systemu --> Odebranie_zadania_aktualizacji
+    Przeslanie_zaktualizowanych_taryf --> Biletomat
+    Powiadomienie_o_bledach_taryf --> Biletomat
+    Biletomat --> Odebranie_zadania_weryfikacji
+    Kontroler --> Odebranie_zadania_weryfikacji
+    Przeslanie_wyniku_weryfikacji -->Biletomat
+    Przeslanie_wyniku_weryfikacji -->Kontroler
+    Biletomat --> Odebranie_danych_transakcji
+    Aplikacja_mobilna --> Odebranie_danych_transakcji
+    Potwierdzenie_rejestracji_transakcji -->Biletomat
+    Potwierdzenie_rejestracji_transakcji -->Aplikacja_mobilna
 
-    system_biletowy --> weryfikacja_waznosci_biletu
-    weryfikacja_waznosci_biletu --> |include| sprawdzenie_danych_biletu_w_bazie_danych
-    weryfikacja_waznosci_biletu --> |extend| powiadomienie_o_probie_oszustwa
-    system_biletowy --> akualizacja_taryf
-    akualizacja_taryf --> |include| wprowadzenie_danych_do_bazy_taryf
-    akualizacja_taryf --> |include| powiadomienie_biletomatów_o_niezgodności_taryf
+    subgraph system biletowy
+    Odebranie_zadania_zakupu([Odebranie żądania wydania biletu])
+    Generowanie_biletu_elektronicznego([Generowanie biletu elektronicznego])
+    Przeslanie_biletu_elektronicznego([Przesłanie biletu])
+    Generowanie_biletu([Generowanie biletu])
+    Obsluga_bledow_zakupu([Powiadomienie o błędach])
+    Odebranie_zadania_zakupu --> Generowanie_biletu_elektronicznego
+    Generowanie_biletu_elektronicznego --> Przeslanie_biletu_elektronicznego
+    Generowanie_biletu_elektronicznego --> |include| Generowanie_biletu
+    Obsluga_bledow_zakupu -.-> |extend| Generowanie_biletu_elektronicznego
+    
+    Odebranie_zadania_aktualizacji([Odebranie żądania aktualizacji])
+    Wprowadzenie_nowych_taryf([Wprowadzenie nowych taryf])
+    Przeslanie_zaktualizowanych_taryf([Przesłanie zaktualizowanych taryf])
+    Aktualizacja_bazy_taryf([Aktualizacja bazy taryf])
+    Powiadomienie_o_bledach_taryf([Powiadomienie o błędach taryf])
+    Odebranie_zadania_aktualizacji --> Wprowadzenie_nowych_taryf
+    Wprowadzenie_nowych_taryf --> Przeslanie_zaktualizowanych_taryf
+    Wprowadzenie_nowych_taryf --> |include| Aktualizacja_bazy_taryf
+    Powiadomienie_o_bledach_taryf -.-> |extend| Przeslanie_zaktualizowanych_taryf
+    
+    Odebranie_zadania_weryfikacji([Odebranie żądania weryfikacji])
+    Sprawdzenie_danych_biletu([Sprawdzenie danych biletu])
+    Przeslanie_wyniku_weryfikacji([Przesłanie wyniku weryfikacji])
+    Weryfikacja_bazy_danych([Weryfikacja bazy danych])
+    Powiadomienie_o_oszustwie([Powiadomienie o oszustwie])
+    Odebranie_zadania_weryfikacji --> Sprawdzenie_danych_biletu
+    Sprawdzenie_danych_biletu --> Przeslanie_wyniku_weryfikacji
+    Sprawdzenie_danych_biletu --> |include| Weryfikacja_bazy_danych
+    Powiadomienie_o_oszustwie -.-> |extend| Przeslanie_wyniku_weryfikacji
+    
+    Odebranie_danych_transakcji([Odebranie danych transakcji])
+    Zapis_transakcji_w_bazie([Zapis danych transakcji])
+    Potwierdzenie_rejestracji_transakcji([Potwierdzenie rejestracji transakcji])
+    Zapis_danych_transakcji([Zapis transakcji])
+    Powiadomienie_o_bledach([Powiadomienie o błędach])
+    Odebranie_danych_transakcji --> Zapis_transakcji_w_bazie
+    Zapis_transakcji_w_bazie --> Potwierdzenie_rejestracji_transakcji
+    Zapis_transakcji_w_bazie --> |include| Zapis_danych_transakcji
+    Powiadomienie_o_bledach -.-> |extend| Potwierdzenie_rejestracji_transakcji
+    end
 ```

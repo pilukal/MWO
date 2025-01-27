@@ -3,8 +3,9 @@
 3. Jako system biletowy, chcę rejestrować każde sprzedane bilety, aby śledzić ruch i sprzedaż w systemie.
 4. Jako system biletowy, chcę współpracować z aplikacjami mobilnymi, aby użytkownik mógł uzyskać elektroniczny bilet w przypadku takiego wyboru.
 # Diagramy Sekwencji
-e
-# Diagramy przypadków uzycia
+
+### Aktualizacja taryf
+
 ### weryfikacja ważności biletu
 >- AKTOR: system biletowy
 >- OBIEKTY: kontroler
@@ -35,6 +36,43 @@ sequenceDiagram
     END
 
 ```
+
+### Aktualizacja taryf
+>- AKTOR: Administrator systemu
+>- OBIEKTY: System biletowy, Baza taryf, Biletomat
+>- Scenariusz główny:
+>    - Aktor przesyła żądanie aktualizacji taryf
+>    - System biletowy odbiera żądanie aktualizacji taryf
+>    - System biletowy wprowadza aktualizacje taryf
+>    - System biletowy przesyła aktualizacje taryf do Biletomatu
+>- Scenariusz alternatywny 1 (Błędy taryf):
+>    - Aktor przesyła żądanie aktualizacji taryf
+>    - System biletowy odbiera żądanie aktualizacji taryf
+>    - System biletowy wprowadza aktualizacje taryf
+>    - System biletowy przesyła aktualizacje taryf do Biletomatu
+>    - System biletowy powiadamia Biletomat o błedach taryf
+
+```mermaid
+sequenceDiagram
+ 
+    PARTICIPANT USER AS Administrator Systemu
+    PARTICIPANT SB AS System biletowy
+    PARTICIPANT DB AS Baza taryf
+    PARTICIPANT BT AS Biletomat
+
+
+    USER->>SB: Żądanie aktualizacji
+    SB->>SB: Odebranie żądania aktualizacji
+    SB->>SB: Wprowadzenie nowych taryf
+    SB->>DB: Aktualizacja bazy taryf
+    SB->>BT: Aktualizuj taryfy
+    ALT Błędy taryf
+    SB->>BT: Powiadomienie o błędach
+    END
+```
+
+# Diagramy przypadków uzycia
+
 ### Współpraca z aplikacjami mobilnymi
 ```mermaid
 flowchart TD

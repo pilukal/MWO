@@ -2,9 +2,39 @@
 2. Jako system biletowy, chcę umożliwiać sprawdzenie ważności biletu w czasie rzeczywistym, aby zapobiegać oszustwom.
 3. Jako system biletowy, chcę rejestrować każde sprzedane bilety, aby śledzić ruch i sprzedaż w systemie.
 4. Jako system biletowy, chcę współpracować z aplikacjami mobilnymi, aby użytkownik mógł uzyskać elektroniczny bilet w przypadku takiego wyboru.
+# Diagramy Sekwencji
+e
+# Diagramy przypadków uzycia
+### weryfikacja ważności biletu
+>- AKTOR: system biletowy
+>- OBIEKTY: kontroler
+>- Scenariusz główny:
+>    - System biletowy odbiera żądanie weryfikacji ważności biletu od innego systemu 
+>    - System biletowy sprawdza dane biletu w swojej bazie danych 
+>    - System biletowy przesyła odpowiedź ważny do żądającego systemu 
+>- Scenariusz alternatywny 1 (nieważny bilet):
+>    - System biletowy odbiera żądanie weryfikacji ważności biletu od innego systemu
+>    - System biletowy sprawdza dane biletu w swojej bazie danych i identyfikuje, że bilet jest nieważny 
+>    - System biletowy wysyła odpowiedź o nieważnym bilecie do żądającego systemu 
+>    - System biletowy rejestruje zdarzenie nieważnego biletu jako potencjalną próbę oszustwa 
 
-### Diagramy przypadków uzycia
+```mermaid
+sequenceDiagram
+ 
+    PARTICIPANT USER AS Kontroler
+    PARTICIPANT SB AS System biletowy
 
+
+    USER->>SB: żądanie weryfikacji ważności biletu
+    SB->>SB: sprawdzenie danych biletu
+    ALT Bilet ważny
+    SB-->>USER: bilet ważny
+    ELSE Bilet nieważny
+    SB-->>SB: zapiaznie weryfikacji nieważnego biletu
+    SB-->>USER: bilet nieważny
+    END
+
+```
 ### Współpraca z aplikacjami mobilnymi
 ```mermaid
 flowchart TD

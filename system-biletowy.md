@@ -64,26 +64,26 @@ flowchart TD
 ```mermaid
 flowchart TD
     
-    Biletomat{Biletomat}
-    Kontroler{Kontroler}
-    Biletomat --> Odebranie_zadania_weryfikacji
-    Kontroler --> Odebranie_zadania_weryfikacji
-    Przeslanie_wyniku_weryfikacji -->Biletomat
-    Przeslanie_wyniku_weryfikacji -->Kontroler
-    subgraph system biletowy
+    Uzytkownik{Użytkownik}
+    Oczekiwanie_na_wybor_uzytkownika --> Uzytkownik
+
+    subgraph biletomat
     
-    Odebranie_zadania_weryfikacji([Odebranie żądania weryfikacji])
-    Sprawdzenie_danych_biletu([Sprawdzenie danych biletu])
-    Przeslanie_wyniku_weryfikacji([Przesłanie wyniku weryfikacji])
+    Uruchomienie_ekranu_powitalnego([Uruchomienie ekranu powitalnego])
+    Pobranie_listy_biletow([Pobranie listy biletów])
+    Wyswietlenie_biletow([Wyświetlenie biletów])
+    Oczekiwanie_na_wybor_uzytkownika([Oczekiwanie na wybór użytkownika])
 
-    Weryfikacja_bazy_danych([Weryfikacja bazy danych])
-    Powiadomienie_o_oszustwie([Powiadomienie o oszustwie])
+    Aktualizacja_biletow([Aktualizacja biletów])
+    Ostrzezenie_o_braku_danych([Ostrzeżenie o braku danych])
 
-    Odebranie_zadania_weryfikacji --> Sprawdzenie_danych_biletu
-    Sprawdzenie_danych_biletu --> Przeslanie_wyniku_weryfikacji
 
-    Sprawdzenie_danych_biletu --> |include| Weryfikacja_bazy_danych
-    Powiadomienie_o_oszustwie -.-> |extend| Przeslanie_wyniku_weryfikacji
+    Uruchomienie_ekranu_powitalnego --> Pobranie_listy_biletow
+    Pobranie_listy_biletow --> Wyswietlenie_biletow
+    Wyswietlenie_biletow --> Oczekiwanie_na_wybor_uzytkownika
+
+    Pobranie_listy_biletow --> |include| Aktualizacja_biletow
+    Ostrzezenie_o_braku_danych -.-> |extend| Pobranie_listy_biletow
     end
 ```
 

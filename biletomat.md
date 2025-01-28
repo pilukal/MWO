@@ -135,20 +135,21 @@ sequenceDiagram
  
     PARTICIPANT USER AS Użytkownik
     PARTICIPANT BT AS Biletomat
-
-    USER->>BT: Wybież opcję wyboru języka
+  
+    USER ->>+ BT: Wybież opcję wyboru języka
     BT->>BT: Pobierz listę dostępnych języków
-    BT->>USER: Wyświetl ekran wyboru języka
+    BT->>BT: Wyświetl ekran wyboru języka
+    BT-->>-USER: oczekuj na wybór języka
     ALT wybrano język
-    USER->>BT: Wybierz język
+    USER->>+BT: Wybierz język
     BT->>BT: Zamknij ekran wyboru języka
     BT->>BT: Zarejestruj wybór języka
     BT->>BT: Dostosuj interfejs do wybranego języka
     ELSE nie wybrano jezyka przez 30 sekund
     BT->>BT: Zamknij ekran wyboru języka
     BT->>BT: Dostosuj interfejs do języka domyślnego
-    
     END
+    BT-->>- USER: oczekuj kolejnych działań użytkownika
 ```
 
 ## wyświetlenie dostępnych biletów

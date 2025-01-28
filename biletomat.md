@@ -63,6 +63,52 @@ classDiagram
     Biletomat --> Bilet : wyswietla listę biletów
 ```
 
+## Obsługa wygoru języka
+## OPIS KLAS
+### KLASY
+#### BAZAJEZYKOW
+- ATRYBUTY: Brak jawnie zdefiniowanych w diagramie.
+- METODY: `LIST<JEZYK> POBIERZLISTEJEZYKOW(): Pobiera listę dostępnych języków.`
+#### BILETOMAT
+- ATRYBUTY: Brak jawnie zdefiniowanych w diagramie.
+- METODY:
+ `VOID WYSWIETLEKRANWYBORUJEZYKA(): Wyświetla ekran umożliwiający użytkownikowi wybór języka.`
+ `VOID ZAMKNIJEKRANWYBORUJEZYKA(): Zamyka ekran wyboru języka.`
+ `VOID ZAREJESTRUJWYBORJEZYKA(JEZYK JEZYK): Rejestruje wybór języka dokonany przez użytkownika.`
+ `VOID DOSTOSUJINTERFEJS(JEZYK JEZYK): Dostosowuje interfejs biletomatu do wybranego języka.`
+#### JEZYK
+- ATRYBUTY:
+`STRING KOD: Kod języka (np. „PL” dla polskiego, „EN” dla angielskiego).`
+`STRING NAZWA: Nazwa języka (np. „Polski”, „English”).`
+`METODY: Brak jawnie zdefiniowanych w diagramie.`
+### RELACJE:
+`BILETOMAT` KORZYSTA Z METODY `POBIERZLISTEJEZYKOW` KLASY `BAZAJEZYKOW` W CELU UZYSKANIA LISTY JĘZYKÓW.
+`BILETOMAT` JEST POWIĄZANY Z `JEZYK` W KONTEKŚCIE REJESTRACJI WYBORU JĘZYKA I DOSTOSOWANIA INTERFEJSU.
+
+```mermaid
+classDiagram
+    class BazaJezykow {
+        +pobierzListeJezykow()
+    }
+
+    class Biletomat {
+        +wyswietlEkranWyboruJezyka()
+        +zamknijEkranWyboruJezyka()
+        +zarejestrujWyborJezyka(jezyk: Jezyk)
+        +dostosujInterfejs(jezyk: Jezyk)
+    }
+
+    class Jezyk {
+        -kod: String
+        -nazwa: String
+    }
+
+    Biletomat --> BazaJezykow : pobiera listę języków
+    BazaJezykow --> Jezyk : przechowuje
+    Biletomat --> Jezyk : wyświetla
+
+```
+
 # Diagramy sekwencji
 
 ## Obsługa wyboru języka

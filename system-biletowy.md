@@ -110,8 +110,6 @@ classDiagram
 
 # Diagramy Sekwencji
 
-### Aktualizacja taryf
-
 ### weryfikacja ważności biletu
 >- AKTOR: system biletowy
 >- OBIEKTY: kontroler
@@ -146,37 +144,61 @@ sequenceDiagram
 ### Aktualizacja taryf
 >- AKTOR: Administrator systemu
 >- OBIEKTY: System biletowy, Baza taryf, Biletomat
->- Scenariusz główny:
->    - Aktor przesyła żądanie aktualizacji taryf
->    - System biletowy odbiera żądanie aktualizacji taryf
->    - System biletowy wprowadza aktualizacje taryf
->    - System biletowy przesyła aktualizacje taryf do Biletomatu
+>- Scenariusz główny()aktualizacja pomyślna:
+>   - Administrator systemu przesyła żądanie aktualizacji taryf
+>   - System biletowy przesyła aktualizacje taryf do Bazy Taryf
+>   - Baza taryf aktualizuje taryfy 
+>   - Baza taryf zwraca poprawne wykonanie rządania
+>   - System biletowy przesyła aktualizacje taryf do Biletomatu
+>   - Biletomat aktualizuje taryfy
+>   - Biletomat zwraca poprawne wykonanie rządania
+>   - System biletowy wyświtla informacje na temat stanu aktualizacji
 >- Scenariusz alternatywny 1 (Błędy taryf):
->    - Aktor przesyła żądanie aktualizacji taryf
->    - System biletowy odbiera żądanie aktualizacji taryf
->    - System biletowy wprowadza aktualizacje taryf
->    - System biletowy przesyła aktualizacje taryf do Biletomatu
->    - System biletowy powiadamia Biletomat o błedach taryf
+>   - Administrator systemu przesyła żądanie aktualizacji taryf
+>   - System biletowy przesyła aktualizacje taryf do Bazy Taryf
+>   - Baza taryf aktualizuje taryfy 
+>   - Baza taryf zwraca błąd w wykonaniu rządania
+>   - System biletowy wyświtla informacje na temat stanu aktualizacji
+>- Scenariusz alternatywny 2 (Błąd aktualizacji biletomatu):
+>   - Administrator systemu przesyła żądanie aktualizacji taryf
+>   - System biletowy przesyła aktualizacje taryf do Bazy Taryf
+>   - Baza taryf aktualizuje taryfy 
+>   - Baza taryf zwraca poprawne wykonanie rządania
+>   - System biletowy przesyła aktualizacje taryf do Biletomatu
+>   - Biletomat aktualizuje taryfy
+>   - Biletomat zwraca błąd wykonania rządania
+>   - System biletowy wyświetla informacje na temat stanu aktualizacji
 
 ```mermaid
-sequenceDiagram
- 
+sequenceDiagram 
     PARTICIPANT USER AS Administrator Systemu
     PARTICIPANT SB AS System biletowy
     PARTICIPANT DB AS Baza taryf
     PARTICIPANT BT AS Biletomat
 
 
-    USER->>SB: Żądanie aktualizacji
-    SB->>SB: Odebranie żądania aktualizacji
-    SB->>SB: Wprowadzenie nowych taryf
-    SB->>DB: Aktualizacja bazy taryf
-    SB->>BT: Aktualizuj taryfy
-    ALT Błędy taryf
-    SB->>BT: Powiadomienie o błędach
-    END
-```
+    USER->>+SB: Żądanie aktualizacji
+    SB->>+DB: Aktualizuj bazy taryf
+    DB->>DB: aktualizacja taryf
+    ALT błąd aktualizacjia
+    DB -->> SB: błąd w aktualizacji taryf
+    SB-)BT: Powiadomienie o błędach taryf
 
+    else aktualizacja pomyślna
+    DB-->>-SB: taryfy zaktualizowano pomyślnie
+    
+    SB->>+BT: Aktualizuj taryfy
+    BT->>BT: aktualizacja taryf
+    ALT aktualizacja pomyślna
+    BT -->> SB: taryfy zaktualizowano pomyślnie
+    else błąd aktualizacji
+    BT -->>- SB: błąd aktualizacji taryf
+    end
+    END
+    SB->>SB: wyświetl informacje na temat stanu aktualizacji
+    SB-->>-USER: oczekuj na kolejne akcje
+```
+    
 # Diagramy przypadków uzycia
 
 ### Współpraca z aplikacjami mobilnymi

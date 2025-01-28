@@ -167,21 +167,21 @@ sequenceDiagram
 >    - Biletomat wyświetla ostrzeżenie o braku aktualnych danych.
 ```mermaid
 sequenceDiagram
- 
     PARTICIPANT USER AS Użytkownik
     PARTICIPANT BI AS Biletomat
     PARTICIPANT CS AS System centralny
 
+    USER ->>+ BI: wyjdź z trybu uśpienia
     BI->>BI: Uruchomienie ekranu powitalnego
-    BI->>CS: Zapytanie o listę dostępnych biletów
+    BI->>+CS: Zapytanie o listę dostępnych biletów
     ALT Lista biletów dostępna
     CS-->>BI: lista dostępnych biletów
-    BI-->>USER: wyświetlenie dostępnych biletów
+    BI->>BI: wyświetlenie dostępnych biletów
     ELSE Lista biletów niedostępna
-    CS-->>BI: komunikat o błędzie
-    BI-->>USER: wyświetlenie informacji o braku aktualnych danych
+    CS-->>-BI: komunikat o błędzie
+    BI->>BI: wyświetlenie informacji o braku aktualnych danych
     END
-
+    BI-->>-USER:oczekiwanie na dalsze akcje
 ```
 # Diagramy przypadków uzycia
 

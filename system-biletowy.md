@@ -5,6 +5,63 @@
 
 # Diagramy klas
 
+## Aktualizacja taryf 
+
+## OPIS KLAS
+### KLASY
+#### SystemBiletowy
+ - METODY: `aktualizujTaryfy(taryfy: Taryfa)`, `powiadomOBledach(biletomat: Biletomat, taryfy: Taryfa)`
+#### AdministratorSystemu
+ - METODY: `przeslijZadanieAktualizacji(taryfy: Taryfa)`
+#### BazaTaryf
+ - METODY: `BzapiszTaryfy(taryfy: Taryfa)`
+#### Biletomat
+ - METODY: `odbierzAktualizacje(taryfy: Taryfa)`, `otrzymajPowiadomienieOBledach(taryfy: Taryfa)`
+#### Taryfa
+- ATRYBUTY: `string id`,`string nazwa`,`Float stawka`
+### Relacje
+- `ADMINISTRATORSYSTEMU` JEST POWIĄZANY Z `SYSTEMBILETOWY` (ASOCJACJA): Administrator systemu wysyła żądanie aktualizacji taryf.
+- `SYSTEMBILETOWY` KORZYSTA Z METODY `ZAPISZTARYFY` KLASY `BAZATARYF` DO ZAPISYWANIA TARYF.
+- `SYSTEMBILETOWY` KORZYSTA Z METODY `ODBIERZAKTUALIZACJE` KLASY `BILETOMAT` DO PRZESYŁANIA AKTUALIZACJI.
+- `SYSTEMBILETOWY` KORZYSTA Z METODY `OTRZYMAJPOWIADOMIENIEOBLEDACH` KLASY `BILETOMAT` DO PRZEKAZYWANIA INFORMACJI O BŁĘDACH.
+- `SYSTEMBILETOWY` JEST POWIĄZANY Z `TARYFA` (ASOCJACJA): System wprowadza zmiany w taryfach.
+- `BAZATARYF` JEST POWIĄZANY Z `TARYFA` (ASOCJACJA): Baza przechowuje dane taryf.
+- `BILETOMAT` JEST POWIĄZANY Z `TARYFA` (ASOCJACJA): Biletomat otrzymuje aktualne taryfy.
+
+```mermaid
+classDiagram
+    class SystemBiletowy {
+        +aktualizujTaryfy(taryfy: Taryfa)
+        +powiadomOBledach(biletomat: Biletomat, taryfy: Taryfa)
+    }
+
+    class AdministratorSystemu {
+        +przeslijZadanieAktualizacji(taryfy: Taryfa)
+    }
+
+    class BazaTaryf {
+        +zapiszTaryfy(taryfy: Taryfa)
+    }
+
+    class Biletomat {
+        +odbierzAktualizacje(taryfy: Taryfa)
+        +otrzymajPowiadomienieOBledach(taryfy: Taryfa)
+    }
+
+    class Taryfa {
+        -id: String
+        -nazwa: String
+        -stawka: Float
+    }
+
+    AdministratorSystemu --> SystemBiletowy : wysyła żądanie aktualizacji
+    SystemBiletowy --> BazaTaryf : zapisuje taryfy
+    SystemBiletowy --> Biletomat : przesyła aktualizacje
+    SystemBiletowy --> Biletomat : powiadamia o błędach
+
+    end
+```
+
 ### Weryfikacja waznosci biletu
 
 ### KLASY
@@ -49,6 +106,7 @@ classDiagram
     SystemBiletowy --> Bilet : sprawdza
 
 ```
+
 
 # Diagramy Sekwencji
 

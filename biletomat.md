@@ -3,6 +3,112 @@
 3. Jako biletomat, chcę posiadać czytelny ekran dotykowy, aby użytkownik mógł łatwo nawigować po interfejsie.
 4. Jako biletomat, chcę być wyposażony w różne metody płatności (terminal kart, czytnik gotówki, NFC), aby obsługiwać różnorodne transakcje.
 5. Jako biletomat, chcę wydawać resztę w gotówce, jeśli użytkownik zapłaci nadmiarowo, aby transakcja była zgodna z oczekiwaniami.
+
+# Diagramy klas
+
+## Wyświetlenie dostępnych biletów
+
+### KLASY
+
+#### Biletomat
+- **ATRYBUTY**: brak
+- **METODY**:
+  - `VOID uruchomEkranPowitalny()`: Uruchamia ekran powitalny w biletomacie, który jest wyświetlany użytkownikowi po włączeniu urządzenia.
+  - `VOID wyslijZapytanie()`: Wysyła zapytanie do systemu centralnego, aby uzyskać listę dostępnych biletów.
+  - `VOID wyswietlBilety()`: Wyświetla użytkownikowi listę dostępnych biletów wraz z ich szczegółami.
+  - `VOID wyswietlBlad()`: Wyświetla użytkownikowi komunikat o błędzie, np. w przypadku braku dostępnych biletów lub problemu z połączeniem z systemem centralnym.
+
+#### SystemCentralny
+- **ATRYBUTY**: brak
+- **METODY**:
+  - `void zapytajOBilety(): Bilet[]`: Odpowiada na zapytanie biletomatu o dostępność biletów. Może zwrócić listę biletów lub wyjątek - komunikat o błędzie.
+
+#### Bilet
+- **ATRYBUTY**:
+  - `String numer`: Numer biletu, który identyfikuje konkretny bilet.
+  - `String nazwa`: Nazwa biletu (np. bilet normalny, ulgowy).
+  - `String kategoria`: Kategoria biletu (np. bilety na podróż, bilety na wydarzenia).
+  - `String status`: Status biletu (np. dostępny, wyprzedany).
+
+### RELACJE:
+
+- **Biletomat** KORZYSTA Z **SystemuCentralnego**: Biletomat wysyła zapytanie o dostępność biletów, a system centralny zwraca listę dostępnych biletów.
+- **SystemCentralny** KORZYSTA Z **Bilet**: System centralny przechowuje dane dotyczące biletów (numer, nazwa, kategoria, status).
+- **Biletomat** KORZYSTA Z **Bilet**: Biletomat wyświetla listę dostępnych biletów użytkownikowi, korzystając z danych przechowywanych w obiektach klasy `Bilet`.
+
+```mermaid
+classDiagram
+    class Biletomat {
+        +uruchomEkranPowitalny()
+        +wyslijZapytanie()
+        +wyswietlBilety()
+        +wyswietlBlad()
+    }
+
+    class SystemCentralny {
+        +zapytajOBilety()
+        +zwracajListeBiletow()
+        +zwracajBlad()
+    }
+
+    class Bilet {
+        +numer: String
+        +nazwa: String
+        +kategoria: String
+        +status: String
+    }
+
+    Biletomat --> SystemCentralny : pozyskuje listę dostępnych biletów
+    SystemCentralny --> Bilet : przechowuje listę dostępnych
+    Biletomat --> Bilet : wyswietla listę biletów
+```
+
+## Obsługa wygoru języka
+## OPIS KLAS
+### KLASY
+#### BAZAJEZYKOW
+- ATRYBUTY: Brak jawnie zdefiniowanych w diagramie.
+- METODY: `LIST<JEZYK> POBIERZLISTEJEZYKOW(): Pobiera listę dostępnych języków.`
+#### BILETOMAT
+- ATRYBUTY: Brak jawnie zdefiniowanych w diagramie.
+- METODY:
+ `VOID WYSWIETLEKRANWYBORUJEZYKA(): Wyświetla ekran umożliwiający użytkownikowi wybór języka.`
+ `VOID ZAMKNIJEKRANWYBORUJEZYKA(): Zamyka ekran wyboru języka.`
+ `VOID ZAREJESTRUJWYBORJEZYKA(JEZYK JEZYK): Rejestruje wybór języka dokonany przez użytkownika.`
+ `VOID DOSTOSUJINTERFEJS(JEZYK JEZYK): Dostosowuje interfejs biletomatu do wybranego języka.`
+#### JEZYK
+- ATRYBUTY:
+`STRING KOD: Kod języka (np. „PL” dla polskiego, „EN” dla angielskiego).`
+`STRING NAZWA: Nazwa języka (np. „Polski”, „English”).`
+`METODY: Brak jawnie zdefiniowanych w diagramie.`
+### RELACJE:
+`BILETOMAT` KORZYSTA Z METODY `POBIERZLISTEJEZYKOW` KLASY `BAZAJEZYKOW` W CELU UZYSKANIA LISTY JĘZYKÓW.
+`BILETOMAT` JEST POWIĄZANY Z `JEZYK` W KONTEKŚCIE REJESTRACJI WYBORU JĘZYKA I DOSTOSOWANIA INTERFEJSU.
+
+```mermaid
+classDiagram
+    class BazaJezykow {
+        +pobierzListeJezykow()
+    }
+
+    class Biletomat {
+        +wyswietlEkranWyboruJezyka()
+        +zamknijEkranWyboruJezyka()
+        +zarejestrujWyborJezyka(jezyk: Jezyk)
+        +dostosujInterfejs(jezyk: Jezyk)
+    }
+
+    class Jezyk {
+        -kod: String
+        -nazwa: String
+    }
+
+    Biletomat --> BazaJezykow : pobiera listę języków
+    BazaJezykow --> Jezyk : przechowuje
+    Biletomat --> Jezyk : wyświetla
+
+```
+
 # Diagramy sekwencji
 
 ## Obsługa wyboru języka

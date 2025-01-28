@@ -2,9 +2,31 @@
 2. Jako system biletowy, chcę umożliwiać sprawdzenie ważności biletu w czasie rzeczywistym, aby zapobiegać oszustwom.
 3. Jako system biletowy, chcę rejestrować każde sprzedane bilety, aby śledzić ruch i sprzedaż w systemie.
 4. Jako system biletowy, chcę współpracować z aplikacjami mobilnymi, aby użytkownik mógł uzyskać elektroniczny bilet w przypadku takiego wyboru.
+
 # Diagramy klas
 
 ### Weryfikacja waznosci biletu
+
+### KLASY
+
+#### SystemBiletowy
+- **METODY**:
+  - `void sprawdzBilet(Bilet bilet)`: Metoda, która weryfikuje ważność biletu. Przyjmuje obiekt klasy `Bilet` i sprawdza, czy bilet jest ważny na podstawie daty ważności i statusu.
+
+#### Kontroler
+- **METODY**:
+  - `void wyslijZadanieSprawdzeniaBiletu(Bilet bilet)`: Metoda, która wysyła zapytanie do systemu biletowego o sprawdzenie ważności konkretnego biletu. Przekazuje obiekt `Bilet` do systemu biletowego.
+
+#### Bilet
+- **ATRYBUTY**:
+  - `String numer`: Numer biletu, który jednoznacznie identyfikuje bilet.
+  - `Date dataWaznosci`: Data, do której bilet jest ważny.
+  - `String status`: Status biletu (np. "ważny", "nieważny", "zrealizowany").
+
+### RELACJE:
+
+- **Kontroler** KORZYSTA Z **SystemuBiletowego**: Kontroler wysyła zapytanie o weryfikację biletu do systemu biletowego, aby sprawdzić, czy bilet jest ważny.
+- **SystemBiletowy** KORZYSTA Z **Bilet**: System biletowy sprawdza szczegóły biletu, takie jak numer, data ważności i status, aby przeprowadzić weryfikację.
 
 ```mermaid
 classDiagram

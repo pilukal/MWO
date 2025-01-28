@@ -110,8 +110,6 @@ classDiagram
 
 # Diagramy Sekwencji
 
-### Aktualizacja taryf
-
 ### weryfikacja ważności biletu
 >- AKTOR: system biletowy
 >- OBIEKTY: kontroler
@@ -127,20 +125,17 @@ classDiagram
 
 ```mermaid
 sequenceDiagram
- 
     PARTICIPANT USER AS Kontroler
     PARTICIPANT SB AS System biletowy
-
-
-    USER->>SB: żądanie weryfikacji ważności biletu
+    USER->>+SB: żądanie weryfikacji ważności biletu
     SB->>SB: sprawdzenie danych biletu
     ALT Bilet ważny
-    SB-->>USER: bilet ważny
+    SB->>SB: wyświetl komunikat o poprawnym bilecie
     ELSE Bilet nieważny
-    SB-->>SB: zapiaznie weryfikacji nieważnego biletu
-    SB-->>USER: bilet nieważny
+    SB->>SB: zapisanie weryfikacji nieważnego biletu
+    SB->>SB: wyświetl komunikat o niepoprawnym bilecie
     END
-
+    SB-->>-USER: oczekuj dalszych działań
 ```
 
 ### Aktualizacja taryf

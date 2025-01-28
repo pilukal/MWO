@@ -2,6 +2,32 @@
 2. Jako system biletowy, chcę umożliwiać sprawdzenie ważności biletu w czasie rzeczywistym, aby zapobiegać oszustwom.
 3. Jako system biletowy, chcę rejestrować każde sprzedane bilety, aby śledzić ruch i sprzedaż w systemie.
 4. Jako system biletowy, chcę współpracować z aplikacjami mobilnymi, aby użytkownik mógł uzyskać elektroniczny bilet w przypadku takiego wyboru.
+# Diagramy klas
+
+### Weryfikacja waznosci biletu
+
+```mermaid
+classDiagram
+    class SystemBiletowy {
+        +sprawdzBilet(bilet: Bilet)
+    }
+
+    class Kontroler {
+        +wyslijZadanieSprawdzeniaBiletu(bilet: Bilet)
+        
+    }
+
+    class Bilet {
+        +numer: String
+        +dataWaznosci: Date
+        +status: String
+    }
+
+    Kontroler --> SystemBiletowy : wysyła zapytanie
+    SystemBiletowy --> Bilet : sprawdza
+
+```
+
 # Diagramy Sekwencji
 
 ### Aktualizacja taryf

@@ -67,46 +67,56 @@ classDiagram
 ## OPIS KLAS
 ### KLASY
 #### BAZAJEZYKOW
-- ATRYBUTY: Brak jawnie zdefiniowanych w diagramie.
-- METODY: `LIST<JEZYK> POBIERZLISTEJEZYKOW(): Pobiera listę dostępnych języków.`
-#### BILETOMAT
-- ATRYBUTY: Brak jawnie zdefiniowanych w diagramie.
+- ATRYBUTY:
+  -`lista_jezykow LIST<JEZYK>`
 - METODY:
- `VOID WYSWIETLEKRANWYBORUJEZYKA(): Wyświetla ekran umożliwiający użytkownikowi wybór języka.`
- `VOID ZAMKNIJEKRANWYBORUJEZYKA(): Zamyka ekran wyboru języka.`
- `VOID ZAREJESTRUJWYBORJEZYKA(JEZYK JEZYK): Rejestruje wybór języka dokonany przez użytkownika.`
- `VOID DOSTOSUJINTERFEJS(JEZYK JEZYK): Dostosowuje interfejs biletomatu do wybranego języka.`
+  - `LIST<JEZYK> POBIERZLISTEJEZYKOW(): Pobiera listę dostępnych języków.`
+#### BILETOMAT
+- ATRYBUTY:
+  -`jezyk jezyk`
+- METODY:
+  -`VOID WYSWIETLEKRANWYBORUJEZYKA(): Wyświetla ekran umożliwiający użytkownikowi wybór języka.`
+  -`VOID ZAMKNIJEKRANWYBORUJEZYKA(): Zamyka ekran wyboru języka.`
+  -`VOID ZAREJESTRUJWYBORJEZYKA(JEZYK JEZYK): Rejestruje wybór języka dokonany przez użytkownika.`
+  -`VOID DOSTOSUJINTERFEJS(JEZYK JEZYK): Dostosowuje interfejs biletomatu do wybranego języka.`
 #### JEZYK
 - ATRYBUTY:
-`STRING KOD: Kod języka (np. „PL” dla polskiego, „EN” dla angielskiego).`
-`STRING NAZWA: Nazwa języka (np. „Polski”, „English”).`
-`METODY: Brak jawnie zdefiniowanych w diagramie.`
+  -`STRING KOD`
+  -`STRING NAZWA`
+  -`STRING kodowanie`
+  -`STRING lokalizacja`
+  -`STRING rodzina`
 ### RELACJE:
-`BILETOMAT` KORZYSTA Z METODY `POBIERZLISTEJEZYKOW` KLASY `BAZAJEZYKOW` W CELU UZYSKANIA LISTY JĘZYKÓW.
-`BILETOMAT` JEST POWIĄZANY Z `JEZYK` W KONTEKŚCIE REJESTRACJI WYBORU JĘZYKA I DOSTOSOWANIA INTERFEJSU.
+  -`BILETOMAT` KORZYSTA Z METODY `POBIERZLISTEJEZYKOW` KLASY `BAZAJEZYKOW` W CELU UZYSKANIA LISTY JĘZYKÓW.
+  -`BILETOMAT` JEST POWIĄZANY Z `JEZYK` W KONTEKŚCIE REJESTRACJI WYBORU JĘZYKA I DOSTOSOWANIA INTERFEJSU.
+  -`BazaJezyków` ZAWIERA LISTE `JEZYK`
 
 ```mermaid
 classDiagram
     class BazaJezykow {
-        +pobierzListeJezykow()
+        - lista_jezykow: List<Jezyk>
+        + pobierzListeJezykow() List<Jezyk>
     }
 
     class Biletomat {
-        +wyswietlEkranWyboruJezyka()
-        +zamknijEkranWyboruJezyka()
-        +zarejestrujWyborJezyka(jezyk: Jezyk)
-        +dostosujInterfejs(jezyk: Jezyk)
+        - jezyk: Jezyk
+        + wyswietlEkranWyboruJezyka()
+        + zamknijEkranWyboruJezyka()
+        + zarejestrujWyborJezyka(jezyk: Jezyk)
+        + dostosujInterfejs(jezyk: Jezyk)
     }
 
     class Jezyk {
-        -kod: String
-        -nazwa: String
+        + kod: String
+        + nazwa: String
+        + kodowanie: String
+        + lokalizacja: String
+        + rodzina: String
     }
 
     Biletomat --> BazaJezykow : pobiera listę języków
-    BazaJezykow --> Jezyk : przechowuje
+    BazaJezykow o-- Jezyk
     Biletomat --> Jezyk : wyświetla
-
 ```
 
 # Diagramy sekwencji
